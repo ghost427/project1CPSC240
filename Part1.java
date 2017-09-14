@@ -6,7 +6,7 @@ public class Part1 {
     private String partName;
     private boolean onSale;
 
-    public bikePart(String name, int partNum, double list, double sales, boolean onSale, int quantity) {
+    public Part1(String name, int partNum, double list, double sales, boolean onSale, int quantity) {
         this.partName = name;
         this.partNumber = partNum;
         this.listPrice = list;
