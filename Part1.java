@@ -62,5 +62,9 @@ public class Part1 {
     public void setOnSale(boolean onSale) {
         this.onSale = onSale;
     }
+    
+    public String toString() {
+    	return partName +","+partNumber+","+listPrice+","+salesPrice+","+onSale+","+quantity;
+    }
 
 }
