@@ -1,4 +1,4 @@
-public class Part1 {
+public class Part1 implements Comparable{
     private double listPrice;
     private double salesPrice;
     private int partNumber;
@@ -39,10 +39,6 @@ public class Part1 {
         this.partNumber = partNumber;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
@@ -63,8 +59,24 @@ public class Part1 {
         this.onSale = onSale;
     }
     
+    public int getQuan() {
+    	return quantity;
+    }
+    
+    public void setQuan(int q) {
+    	this.quantity=q;
+    }
+    
     public String toString() {
     	return partName +","+partNumber+","+listPrice+","+salesPrice+","+onSale+","+quantity;
     }
+	@Override
+	public int compareTo(Object arg0) {
+		PartNumberComparator pnc = new PartNumberComparator();
+		return pnc.compare(this,(Part1) arg0);
+	}
+
+
 
 }
+
