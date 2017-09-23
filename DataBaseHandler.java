@@ -1,11 +1,9 @@
 import java.util.*;
-
 import java.io.*;
 
 public class DataBaseHandler {
 
 	public static PartList openDatabase() throws FileNotFoundException {
-		System.out.print(Importer.printHelp());
 		Scanner in = new Scanner(new File("warehouseDB.txt"));
 		int lineNum = Integer.parseInt(in.nextLine());
 		PartList bp = new PartList();

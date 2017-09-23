@@ -1,15 +1,16 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Interpreter {
 	private static boolean flag = true;
+	private static String help = "Please select from the following menu:\n1. Read: read an inventory delivery file\n2.Enter: Enter a part\n3. Sell: Sell a part\n4. Display: Display the current inventory\n5. SortName: Sort all parts by the part name\n6. SortNumber: Sort all parts by number\n7. Quit: close the program\n";
 
 	public static void main(String[] args) throws FileNotFoundException {
 		PartList bikeParts = DataBaseHandler.openDatabase();
 
 		while (flag) {
-			System.out.println("Enter your command choice for the parts displayed, or enter 0 to display your choices again: \n");
+			System.out.println(help);
+			System.out.println("Enter your command choice for the parts displayed: \n");
 			Scanner userIn = new Scanner(System.in);
 			int n = userIn.nextInt();
 			if (n == 1) { // read
@@ -24,23 +25,31 @@ public class Interpreter {
 				System.out.println("please enter your part name: ");
 				String name = in.nextLine();
 				System.out.println("please enter your part number: ");
-				int num = Integer.parseInt(in.nextLine());
+				int num = in.nextInt();
 				System.out.println("please enter your part list Price: ");
-				Double list = Double.parseDouble(in.nextLine());
+				Double list = in.nextDouble();
 				System.out.println("please enter your part sales Price: ");
-				Double sales = Double.parseDouble(in.nextLine());
-				System.out.println("Is this part on sale?: ");
-				Boolean onSale = Boolean.parseBoolean(in.nextLine());
+				Double sales = in.nextDouble();
+				System.out.println("true or fals, this part is on sale?: ");
+				Boolean onSale = in.nextBoolean();
 				System.out.println("please enter the quantity of this part: ");
-				int count = Integer.parseInt(in.nextLine());
-				for (int i = 0; i < bikeParts.getArrSize(); i++) {
-					if (num == PartList.partArray.get(i).getPartNumber()) {
-						PartList.partArray.get(i).setQuantity(PartList.partArray.get(i).getQuan() + count);
-						if (onSale != PartList.partArray.get(i).isOnSale()) {
-							PartList.partArray.get(i).setOnSale(onSale);
+				int count = in.nextInt();
+				boolean match = true;
+				while (match) {
+					for (int i = 0; i < bikeParts.getArrSize(); i++) {
+						if (num == PartList.partArray.get(i).getPartNumber()) {
+							PartList.partArray.get(i).setQuantity(PartList.partArray.get(i).getQuan() + count);
+							if (onSale != PartList.partArray.get(i).isOnSale()) {
+								PartList.partArray.get(i).setOnSale(onSale);
+							}
+							match = false;
+
 						}
-					} else {
+					}
+					if (match) {
 						Part1 np = new Part1(name, num, list, sales, onSale, count);
+						bikeParts.add(np);
+						match=false;
 					}
 				}
 			}
@@ -53,45 +62,55 @@ public class Interpreter {
 				System.out.println("2. by number");
 				int pick = in.nextInt();
 				if (pick == 1) {
-					System.out.println("what is the exact name of this part?: ");
-					String name = in.nextLine();
 					while (sentinal) {
+						System.out.println("what is the exact name of this part?: ");
+						String name = in.nextLine();
 						for (int i = 0; i < bikeParts.getArrSize(); i++) {
 							if (name == PartList.partArray.get(i).getPartName()) {
-								System.out.println("there are " + PartList.partArray.get(i).getQuan()+ " left in stock. how many would you like to sell? :");
+								i = bikeParts.getArrSize();
+								System.out.println("there are " + PartList.partArray.get(i).getQuan()
+										+ " left in stock. how many would you like to sell? :");
 								int count = in.nextInt();
 								if (PartList.partArray.get(i).getQuan() - count >= 0) {
 									PartList.partArray.get(i).setQuantity(PartList.partArray.get(i).getQuan() - count);
+									i = bikeParts.getArrSize();
 									sentinal = false;
+
 								} else {
-									System.out.println("please enter a quantity less than or equal to our current stock of this part: ");
+									i = bikeParts.getArrSize();
+									System.out.println("There are not that many available to sell.");
+									sentinal = false;
 								}
 							} else {
-								System.out.println("there is no part with that name in the intentory");
-								sentinal = true;
+								if (i == bikeParts.getArrSize()) {
+									System.out.println("there is no part with that part number in the intentory");
+								}
 							}
 						}
+						sentinal = false;
 					}
 				}
 				if (pick == 2) {
-					System.out.println("what is the exact part number for this part?: ");
-					int num = in.nextInt();
-					
+					while (sentinal) {
+						System.out.println("what is the exact part number for this part?: ");
+						int num = in.nextInt();
 						for (int i = 0; i < bikeParts.getArrSize(); i++) {
-							while (sentinal) {
 							if (num == PartList.partArray.get(i).getPartNumber()) {
-								System.out.println("there are " + PartList.partArray.get(i).getQuan()+ " left in stock. how many would you like to sell?: ");
+								System.out.println("there are " + PartList.partArray.get(i).getQuan()
+										+ " left in stock. how many would you like to sell?: ");
 								int count = in.nextInt();
 								if (PartList.partArray.get(i).getQuan() - count >= 0) {
 									PartList.partArray.get(i).setQuantity(PartList.partArray.get(i).getQuan() - count);
 									sentinal = false;
 								} else {
-									System.out.println("please enter a quantity less than or equal to our current stock of this part: ");
+									i = bikeParts.getArrSize();
+									System.out.println("There are not that many available to sell.");
+									sentinal = false;
 								}
-							}
-							else {
-								System.out.println("there is no part with that part number in the intentory");
-								sentinal = true;
+							} else {
+								if (i == bikeParts.getArrSize()) {
+									System.out.println("there is no part with that part number in the intentory");
+								}
 							}
 						}
 					}
@@ -120,12 +139,22 @@ public class Interpreter {
 			}
 
 			else if (n == 7) {
-				flag = false;
 				System.out.println("thank you for using this program!");
-				System.exit(0);
-			}
-			else if(n==0) {
-				Importer.printHelp();
+				try {
+					PrintWriter pw = new PrintWriter("warehouseDB.txt", "UTF-8");
+					int lineCount = bikeParts.getArrSize();
+					pw.println(lineCount);
+					for (int i = 0; i < bikeParts.getArrSize(); i++) {
+						pw.println(bikeParts.get(i).toString());
+					}
+					pw.close();
+					flag = false;
+					System.exit(0);
+				} catch (IOException e) {
+					System.out.print("could not write to file!");
+					e.printStackTrace();
+				}
+
 			}
 
 		}
