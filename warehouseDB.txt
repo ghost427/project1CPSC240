@@ -10,4 +10,4 @@ carbonHandleBars42cm,1234567893,47.0,5.58,true,25
 11spRearDerailuer,1234567898,60.0,50.5,true,10
 11spFrontDerailuer,1234567899,60.0,50.5,true,10
 mensBibsMedium,1234567900,110.0,99.0,false,4
-
+new,123,90.0,50.0,true,20
