@@ -1,3 +1,10 @@
+/**
+ * 
+ * @author Connor Byrd
+ * @Description ArrayList to hold the memory side part list and store changes made to the database part list
+ * @returnt with all changes made to it
+ *
+ */
 public class Part1 implements Comparable{
     private double listPrice;
     private double salesPrice;

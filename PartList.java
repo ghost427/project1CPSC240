@@ -1,26 +1,49 @@
-
+/**
+ * @author Connor Byrd
+ * @Description directly manipulates the memory side PartList
+ */
 import java.util.*;
 
 public class PartList {
 	public static ArrayList<Part1> partArray = new ArrayList<Part1>();
 
+	/**
+	 * 
+	 * @param part
+	 * @description add new part
+	 */
 	public void add(Part1 part) {
 		this.partArray.add(part);
 	}
 
-	public void remove(Part1 part) {
-		this.partArray.remove(part);
+	/**
+	 * 
+	 * @param part
+	 * @Description removes a part
+	 */
+	public static void remove(Part1 part) {
+		partArray.remove(part);
 	}
 
+	/**
+	 * 
+	 * @return current ArrayList size
+	 */
 	public static int getArrSize() {
 		return partArray.size();
 	}
 
+	/**
+	 * @description sends ArrayList to PartNumberComparator for sorting
+	 */
 	public static void sortByNumber() {
 		Collections.sort(partArray);
 
 	}
 
+	/**
+	 * @Description sorts the parts in the ArrayList by part name
+	 */
 	public void sortByName() {
 		for (int i = 0; i < partArray.size(); i++) {
 			partArray.get(i).getPartName();

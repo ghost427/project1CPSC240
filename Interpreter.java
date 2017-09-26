@@ -1,25 +1,39 @@
+
+/**
+ * @author Connor Byrd
+ * @Description directly manipulates individual parts of the arraylist 
+ */
 import java.io.*;
+import java.nio.*;
 import java.util.*;
 
 public class Interpreter {
 	private static boolean flag = true;
-	private static String help = "Please select from the following menu:\n1. Read: read an inventory delivery file\n2.Enter: Enter a part\n3. Sell: Sell a part\n4. Display: Display the current inventory\n5. SortName: Sort all parts by the part name\n6. SortNumber: Sort all parts by number\n7. Quit: close the program\n";
+	private static String help = "Please select from the following menu:\n1. Read: read an inventory delivery file\n2. Enter: Enter a part\n3. Sell: Sell a part\n4. Display: Display the current inventory\n5. SortName: Sort all parts by the part name\n6. SortNumber: Sort all parts by number\n7. Quit: close the program\n";
 
 	public static void main(String[] args) throws FileNotFoundException {
-		PartList bikeParts = DataBaseHandler.openDatabase();
+		PartList bikeParts = DataBaseHandler.openDatabase("warehouseDB.txt");
+		
 
 		while (flag) {
 			System.out.println(help);
 			System.out.println("Enter your command choice for the parts displayed: \n");
 			Scanner userIn = new Scanner(System.in);
 			int n = userIn.nextInt();
+			/**
+			 * @return allows user to direct the program to read in a different text
+			 *         document
+			 */
 			if (n == 1) { // read
 				Scanner in = new Scanner(System.in);
 				System.out.println("please enter a filename to read from: ");
-				// Scanner in = new Scanner(new File("warehouseDB.txt"));
-
+				String fileHere = in.next();
+				bikeParts=DataBaseHandler.openDatabase(fileHere);
 			}
 
+			/**
+			 * @description allows user to read in their own part to the part list
+			 */
 			else if (n == 2) { // enter
 				Scanner in = new Scanner(System.in);
 				System.out.println("please enter your part name: ");
@@ -49,11 +63,14 @@ public class Interpreter {
 					if (match) {
 						Part1 np = new Part1(name, num, list, sales, onSale, count);
 						bikeParts.add(np);
-						match=false;
+						match = false;
 					}
 				}
 			}
 
+			/**
+			 * @description removes a specific quantity of a specific part by user input
+			 */
 			else if (n == 3) { // sell
 				boolean sentinal = true;
 				Scanner in = new Scanner(System.in);
@@ -118,10 +135,16 @@ public class Interpreter {
 
 			}
 
+			/**
+			 * @description display current part list
+			 */
 			else if (n == 4) { // display
 				System.out.println(bikeParts.toString());
 			}
 
+			/**
+			 * @return part list sorted by name
+			 */
 			else if (n == 5) { // sortname
 				bikeParts.sortByName();
 				for (int i = 0; i < bikeParts.getArrSize(); i++) {
@@ -130,6 +153,9 @@ public class Interpreter {
 				}
 			}
 
+			/**
+			 * @return part list sorted by part number
+			 */
 			else if (n == 6) { // sortNum
 				bikeParts.sortByNumber();
 				for (int i = 0; i < bikeParts.getArrSize(); i++) {
@@ -138,6 +164,10 @@ public class Interpreter {
 				}
 			}
 
+			/**
+			 * @description saves the changes made to the original text doc and closes the
+			 *              program
+			 */
 			else if (n == 7) {
 				System.out.println("thank you for using this program!");
 				try {

@@ -1,10 +1,15 @@
+/**
+ * @author Connor Byrd
+ * @Description opens database txt doc and reads in initial Arraylist of parts
+ * @return Initial arrayList to the class PartList
+ */
 import java.util.*;
 import java.io.*;
 
 public class DataBaseHandler {
 
-	public static PartList openDatabase() throws FileNotFoundException {
-		Scanner in = new Scanner(new File("warehouseDB.txt"));
+	public static PartList openDatabase(String fileName) throws FileNotFoundException {
+		Scanner in = new Scanner(new File(fileName));
 		int lineNum = Integer.parseInt(in.nextLine());
 		PartList bp = new PartList();
 		for (int i = 0; i < lineNum; i++) {
